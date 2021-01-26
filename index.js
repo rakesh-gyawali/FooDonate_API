@@ -10,11 +10,10 @@ const charityRegistrationRouter = require('./routers/charityRegistrationRouter')
 const charityRouter = require('./routers/charityRouter');
 const userRouter = require('./routers/userRouter');
 const uploadRouter = require('./routers/uploadRouter');
-
+const requestRouter = require('./routers/requestRouter');
 
 const app = express();
 app.use(morgan('tiny'));
-
 
 mongoose.connect(process.env.dbURI, {
     useNewUrlParser: true,
@@ -23,7 +22,6 @@ mongoose.connect(process.env.dbURI, {
 }).then(() => {
     console.log('-----------------Connected to database server-----------------');
 });
-
 
 app.use(cors('*'));
 app.use(express.json());
@@ -40,6 +38,7 @@ app.use('/api/charities', charityRouter);
 app.use('/api/registration-user', userRegistrationRouter);
 app.use('/api/registration-charity', charityRegistrationRouter );
 app.use('/api/uploads', uploadRouter);
+app.use('/api/requests', requestRouter);
 
 app.use((req, res, next) => {
     let err = new Error('Not found!');
@@ -55,7 +54,6 @@ app.use((err, req, res, next) => {
         message: err.message
     });
 });
-
 
 app.listen(process.env.Port, () => {
     console.log(`Server is running at localhost:${process.env.Port}`);
