@@ -5,14 +5,15 @@ require('dotenv').config();
 const path = require('path');
 const cors = require('cors');
 
+const userRegistrationRouter = require('./routers/userRegistrationRouter');
+const charityRegistrationRouter = require('./routers/charityRegistrationRouter');
+const charityRouter = require('./routers/charityRouter');
 const userRouter = require('./routers/userRouter');
+const uploadRouter = require('./routers/uploadRouter');
 
 
 const app = express();
 app.use(morgan('tiny'));
-
-
-
 
 
 mongoose.connect(process.env.dbURI, {
@@ -35,8 +36,10 @@ app.get('/', (req, res, next) => {
 });
 
 app.use('/api/users', userRouter);
-
-
+app.use('/api/charities', charityRouter);
+app.use('/api/registration-user', userRegistrationRouter);
+app.use('/api/registration-charity', charityRegistrationRouter );
+app.use('/api/uploads', uploadRouter);
 
 app.use((req, res, next) => {
     let err = new Error('Not found!');
