@@ -10,7 +10,7 @@ const charityRegistrationRouter = require('./routers/charityRegistrationRouter')
 const charityRouter = require('./routers/charityRouter');
 const userRouter = require('./routers/userRouter');
 const uploadRouter = require('./routers/uploadRouter');
-const requestRouter = require('./routers/requestRouter');
+const donateRouter = require('./routers/donateRouter');
 
 const app = express();
 app.use(morgan('tiny'));
@@ -38,7 +38,7 @@ app.use('/api/charities', charityRouter);
 app.use('/api/registration-user', userRegistrationRouter);
 app.use('/api/registration-charity', charityRegistrationRouter );
 app.use('/api/uploads', uploadRouter);
-app.use('/api/requests', requestRouter);
+app.use('/api/donates', donateRouter);
 
 app.use((req, res, next) => {
     let err = new Error('Not found!');

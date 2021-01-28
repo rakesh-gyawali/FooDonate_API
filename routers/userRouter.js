@@ -8,7 +8,8 @@ router.route('/')
 .get(auth.verifyUser, (req, res, next) => {
     User.findById(req.user.id)
     .then(user => {
-        res.status(200).json(user);
+        let userDetail =  { phoneNo, firstName, lastName, profilePicture }  = user; 
+        res.status(200).json(userDetail);
     }).catch(next);
 })
 .put(auth.verifyUser, (req, res, next) => {

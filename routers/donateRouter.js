@@ -1,5 +1,5 @@
 const express = require('express');
-const Request = require('../models/Request');
+const Request = require('../models/Donate');
 
 const router = express.Router();
 
