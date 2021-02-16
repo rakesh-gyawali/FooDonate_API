@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/register', (req, res, next) => {
 
     let { phoneNo, password, name, logo, address, lat, long, email } = req.body;
-    Charity.findOne({ email })
+    Charity.findOne({ phoneNo })
     .then(charity => {
         if (charity) {
             let err = new Error('Account already exists!');
@@ -47,7 +47,9 @@ router.post('/login', (req, res, next) => {
                         phoneNo: charity.phoneNo,
                         name: charity.name,
                         email: charity.lastName,
+                        role: 'charity'
                     }
+
                     jwt.sign(payload, process.env.SECRET, (err, token) => {
                         if (err) return next(err);
                         res.json({

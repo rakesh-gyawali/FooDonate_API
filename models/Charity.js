@@ -21,10 +21,10 @@ const charitySchema = new Schema({
     address: {
         type: String,
     },
-    lat: {
+    lats: {
         type: String,
     },
-    long: {
+    longs: {
         type: String,
     },
     email: {

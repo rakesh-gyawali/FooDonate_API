@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const verifyUser = (req, res, next) => {
+const verifyAuth = (req, res, next) => {
     let authHeader = req.headers.authorization;
     if (!authHeader) {
         let err = new Error('No authentication information');
@@ -11,17 +11,16 @@ const verifyUser = (req, res, next) => {
     jwt.verify(token, process.env.SECRET, (err, payload) => {
         if (err) return next(err);
         req.user = payload;
-        console.log(req.user)
         next();
     })
 }
 
-const verifyManager = (req, res, next) => {
+const verifyUser = (req, res, next) => {
     if (!req.user) {
         let err = new Error('No authentication information');
         err.status = 401;
         return next(err);
-    } else if (req.user.role === 'basic') {
+    } else if (req.user.role !== 'user') {
         let err = new Error('Forbidden!');
         err.status = 403;
         return next(err);
@@ -30,22 +29,37 @@ const verifyManager = (req, res, next) => {
     next();
 }
 
-// Only Admin allowed
-const verifyAdmin = (req, res, next) => {
+
+const verifyCharity = (req, res, next) => {
     if (!req.user) {
-        let err = new Error('Unauthorized!');
+        let err = new Error('No authentication information');
         err.status = 401;
         return next(err);
-    } else if (req.user.role !== 'admin') {
+    } else if (req.user.role !== 'charity') {
         let err = new Error('Forbidden!');
         err.status = 403;
         return next(err);
     }
+    // Manager and Admin allowed
     next();
 }
 
+// // Only Admin allowed
+// const verifyAdmin = (req, res, next) => {
+//     if (!req.user) {
+//         let err = new Error('Unauthorized!');
+//         err.status = 401;
+//         return next(err);
+//     } else if (req.user.role !== 'admin') {
+//         let err = new Error('Forbidden!');
+//         err.status = 403;
+//         return next(err);
+//     }
+//     next();
+// }
+
 module.exports = {
-    verifyUser,
-    verifyManager,
-    verifyAdmin
+    verifyAuth,
+    verifyCharity,
+    verifyUser
 };

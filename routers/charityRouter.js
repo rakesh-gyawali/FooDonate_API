@@ -1,19 +1,20 @@
 const express = require('express');
 const Charity = require('../models/Charity');
+const auth = require('./auth')
 
 const router = express.Router();
 
 router.route('/')
 .get((req, res, next) => {
     Charity.find()
-    .then(user => {
-        res.status(200).json(user);
+    .then(charity => {
+        res.status(200).json(charity);
     }).catch(next);
 });
 
 router.route('/:charity_id')
-.get((req, res, next) => {
-    Charity.findById(req.params.charity_id)
+.get(auth.verifyAuth, (req, res, next) => {
+    Charity.findById(req.user.id)
     .then(charity => {
         res.status(200).json(charity);
     }).catch(next);

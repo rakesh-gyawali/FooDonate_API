@@ -10,7 +10,7 @@ router.post('/register', (req, res, next) => {
     let { phoneNo, password, firstName, lastName, profilePicture } = req.body;
 
     User.findOne({ phoneNo })
-    .then(user => {
+    .then(user => {     
         if (user) {
             let err = new Error('Account already exists!');
             err.status = 400;
@@ -22,7 +22,7 @@ router.post('/register', (req, res, next) => {
                     .then(user => {
                         res.status(201).json({ "status": "Registration successful" });
                     })
-            })
+            }).catch(next);
     }).catch(next);
 });
 
@@ -46,15 +46,18 @@ router.post('/login', (req, res, next) => {
                     let payload = {
                         id: user.id,
                         phoneNo: user.phoneNo,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
+                        role: 'user'
                     }
 
-                    jwt.sign(payload, process.env.SECRET, (err, token) => {
+                    jwt.sign(payload, process.env.SECRET, {expiresIn: "90d" }, (err, token) => {
                         if (err) return next(err);
                         res.json({
                             status: "Login successful",
-                            token: `Bearer ${token}`
+                            token: `Bearer ${token}`,
+                            phoneNo: payload.phoneNo,
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            profilePicture: user.profilePicture
                         });
                     });
                 }).catch(next);

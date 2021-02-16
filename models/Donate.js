@@ -3,21 +3,21 @@ const Schema = mongoose.Schema;
 
 const donateSchema = new Schema({
     requestedDate: {
-        type: Date,
+        type: String,
         required: true,
     },
     pickUpDate: {
-        type: Date,
+        type: String,
     },
     address: {
         type: String,
         required: true
     },
-    lat: {
+    lats: {
         type: String,
         required: true
     },
-    long: {
+    longs: {
         type: String,
         required: true
     },
@@ -41,7 +41,7 @@ const donateSchema = new Schema({
         required: true
     },
     expiryDate: {
-        type: Date,
+        type: String,
     },
     foodTypes: {
         type: String,
