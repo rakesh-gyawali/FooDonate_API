@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
 const auth = require('./auth');
+const bcrypt = require('bcryptjs');
 
 const router = express.Router();
 
@@ -18,10 +19,15 @@ router.route('/')
     }).catch(next);
 })
 .put(auth.verifyAuth, (req, res, next) => {
-    User.findByIdAndUpdate(req.user.id, req.body, { new: true })
-    .then(user => {
-        res.status(200).json(user);
+    let { phoneNo, password, firstName, lastName, profilePicture } = req.body;
+    bcrypt.hash(password, 10)
+    .then((hash) => {
+        User.findOneAndUpdate(req.user.id, { ... req.body, password: hash }, {new: true})
+        .then(user => {
+            res.status(201).json(user);
+        })
     }).catch(next);
+
 });
 
 module.exports = router;    

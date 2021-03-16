@@ -16,7 +16,7 @@ router.route('/')
     let request = req.body;
     Donate.create({ ... request, user: req.user.id })
     .then(request => {
-        res.status(200).json(request);
+        res.status(201).json(request);
     }).catch(next);
 });
 

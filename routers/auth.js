@@ -25,7 +25,7 @@ const verifyUser = (req, res, next) => {
         err.status = 403;
         return next(err);
     }
-    // Manager and Admin allowed
+    
     next();
 }
 
@@ -40,23 +40,10 @@ const verifyCharity = (req, res, next) => {
         err.status = 403;
         return next(err);
     }
-    // Manager and Admin allowed
+
     next();
 }
 
-// // Only Admin allowed
-// const verifyAdmin = (req, res, next) => {
-//     if (!req.user) {
-//         let err = new Error('Unauthorized!');
-//         err.status = 401;
-//         return next(err);
-//     } else if (req.user.role !== 'admin') {
-//         let err = new Error('Forbidden!');
-//         err.status = 403;
-//         return next(err);
-//     }
-//     next();
-// }
 
 module.exports = {
     verifyAuth,
